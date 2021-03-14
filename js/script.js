@@ -69,6 +69,6 @@ $(document).ready(()=>{ //quando lê a pagina
         $('.modal').fadeIn()
         $('.bg-dark').fadeIn()
     })
-    
+
 
 })

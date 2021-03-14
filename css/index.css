@@ -257,7 +257,7 @@ header .actions-container {
 
 .btn-marked svg {
     float: left;
-    margin-right: 16px;
+    margin-right: 12px;
 
     transition: all .4s ease;
 }
@@ -303,11 +303,14 @@ header .actions-container {
     margin-bottom: 40px;
 }
 
-.data-wrap > div:not(:first-child) {
+.data-wrap > div {
     height: 66px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.data-wrap > div:not(:first-child) {
     align-items: center;
 }
 
@@ -402,7 +405,9 @@ footer {
 .modal {
     display: none;
     background-color: #fff;
-    width: 736px;
+    width: 100%;
+    max-width: 46rem;
+    margin: 0 auto;
     height: 603px;
     position: fixed;
     top: 50%;
@@ -413,26 +418,35 @@ footer {
     
 }
 
-.modal-cards-container {
+.modal-cards-container-mobile {
+    display: none;
+}
+
+.modal-cards-container,
+.modal-cards-container-mobile {
     overflow-y: scroll;
     scroll-padding: 0;
     scroll-margin: 0;
     height: 440px;
 }
 
-.modal-cards-container::-webkit-scrollbar {
+.modal-cards-container::-webkit-scrollbar,
+.modal-cards-container-mobile::-webkit-scrollbar {
     width: 8px;
 }
 
-.modal-cards-container::-webkit-scrollbar-track {
+.modal-cards-container::-webkit-scrollbar-track,
+.modal-cards-container-mobile::-webkit-scrollbar-track {
     background: #fafafa; 
 }
 
-.modal-cards-container::-webkit-scrollbar-thumb {
+.modal-cards-container::-webkit-scrollbar-thumb,
+.modal-cards-container-mobile::-webkit-scrollbar-thumb {
     background: var(--primary-color-2); 
 }
 
-.modal-cards-container::-webkit-scrollbar-thumb:hover {
+.modal-cards-container::-webkit-scrollbar-thumb:hover,
+.modal-cards-container-mobile::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color); 
 }
 
@@ -452,13 +466,12 @@ footer {
 
 .modal h2,
 .modal h3{
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 input.checkbox {
-    margin-top: 1px;
     margin-right: 24px;
-    width: 30px;
+    width: 40px;
     height: 30px;
 }
 
@@ -467,15 +480,142 @@ input.checkbox:hover {
 }
 
 .modal .card {
+    position: relative;
     display: flex;
     flex-direction: row;
+    padding: 32px 16px;
+    overflow: hidden;
+    
 }
+
+.modal .card .price {
+    margin-left: 12px;
+}
+
+.modal .card .left {
+    margin-left: auto;
+}
+
+.left-animated-border, .right-animated-border {
+    pointer-events: none;
+    position: absolute;
+    bottom: 0px;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+}
+
+.left-animated-border::after { /* borda superior */
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: -1px;
+    width: 100%;
+    height: 100%;
+    border-top: 3px solid var(--primary-color);
+    transform: translateX(-100%);
+    transition: all 0.3s ease;
+}
+
+.left-animated-border::before { /* borda esquerda */
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    border-left: 3px solid var(--primary-color);
+    transform: translateY(-100%);
+    transition: all 0.3s ease;
+}
+
+.right-animated-border::after { /* borda inferior */
+    content: "";
+    position: absolute;
+    right: 0px;
+    bottom: -1px;
+    width: 100%;
+    height: 100%;
+    border-bottom: 3px solid var(--primary-color);
+    transform: translateX(-100%);
+    transition: all 0.3s ease;
+    transition-delay: 0.3s;
+}
+
+.right-animated-border::before { /* borda inferior */
+    content: "";
+    position: absolute;
+    right: -1px;
+    bottom: 0px;
+    width: 100%;
+    height: 100%;
+    border-right: 3px solid var(--primary-color);
+    transform: translateY(-100%);
+    transition: all 0.3s ease;
+    transition-delay: 0.3s;
+}
+
+input.checkbox:checked + .left-animated-border::after,
+input.checkbox:checked + .left-animated-border::before {
+    /* transform: translate(0%, 0%); */
+    animation: bordas 0.6s;
+}
+
+input.checkbox:checked + .left-animated-border .right-animated-border::after,
+input.checkbox:checked + .left-animated-border .right-animated-border::before {
+    /* transform: translate(0%, 0%); */
+    animation: bordas 0.3s;
+    animation-delay: 0.3s;
+}
+
+input.checkbox:checked + .left-animated-border {
+    border: 3px solid var(--primary-color);
+    transition-delay: 0.58s;
+}
+
+
+
+@keyframes bordas {
+    50%{
+        transform: translate(0%, 0%);
+    }
+    100%{
+        transform: translate(0%, 0%);
+    }
+}
+
+.card-expanded {
+    display: flex;
+    margin-top: 16px;
+}
+
 
 /* media queries 790 */
 
 @media only screen and (max-width: 790px) {
     section.content-area {
         width: 93%;
+    }
+    .modal {
+        width: 93%;
+    }
+}
+
+/* media queries 670 */
+@media only screen and (max-width: 670px) {
+    .modal-cards-container {
+        display: none;
+    }
+    .modal-cards-container-mobile {
+        display: block;
+    }
+
+    .modal-cards-container-mobile .left {
+        margin-top: 32px;
+    }
+
+    .modal-cards-container-mobile .checkbox {
+        width: 60px;
     }
 }
 
@@ -699,4 +839,12 @@ input.checkbox:hover {
     }
 
     
+}
+
+/* media queries 510px */
+@media only screen and (max-width:510px) {
+    .modal-cards-container-mobile .checkbox {
+        width: 102px;
+        margin-right: 12px;
+    }
 }
